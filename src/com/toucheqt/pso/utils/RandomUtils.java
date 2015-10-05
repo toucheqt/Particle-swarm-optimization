@@ -12,6 +12,9 @@ import com.toucheqt.pso.settings.PSOConst;
  */
 public class RandomUtils {
 
+    private static final double UNIFORM_MIN_VALUE = 0.0;
+    private static final double UNIFORM_MAX_VALUE = 1.0;
+
     /**
      * Creates dimension for particle with random position and velocity;
      * 
@@ -19,12 +22,20 @@ public class RandomUtils {
      */
     public static Dimension getRandomDimension() {
         Dimension dimension = new Dimension();
-        dimension.setX(PSOConst.MIN_X_COORD + (int)(Math.random() * ((PSOConst.MAX_X_COORD - PSOConst.MIN_X_COORD) + 1)));
-        dimension.setY(PSOConst.MIN_Y_COORD + (int)(Math.random() * ((PSOConst.MAX_Y_COORD - PSOConst.MIN_Y_COORD) + 1)));
+        dimension.setX(PSOConst.MIN_X_COORD + (Math.random() * ((PSOConst.MAX_X_COORD - PSOConst.MIN_X_COORD) + 1)));
+        dimension.setY(PSOConst.MIN_Y_COORD + (Math.random() * ((PSOConst.MAX_Y_COORD - PSOConst.MIN_Y_COORD) + 1)));
         dimension.setVelocityX(PSOConst.MIN_X_VELOCITY + (Math.random() * ((PSOConst.MAX_X_VELOCITY - PSOConst.MIN_X_VELOCITY) + 1)));
         dimension.setVelocityY(PSOConst.MIN_Y_VELOCITY + (Math.random() * ((PSOConst.MAX_Y_VELOCITY - PSOConst.MIN_Y_VELOCITY) + 1)));
 
         return dimension;
+    }
+
+
+    /**
+     * Returns random number from uniform distribution
+     */
+    public static Double getUniformRandom() {
+        return UNIFORM_MIN_VALUE + Math.random() * ((UNIFORM_MAX_VALUE - UNIFORM_MIN_VALUE) + 1);
     }
 
 }

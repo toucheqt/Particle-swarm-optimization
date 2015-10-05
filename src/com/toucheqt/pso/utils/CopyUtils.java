@@ -24,6 +24,8 @@ public class CopyUtils {
 
         Particle copiedParticle = new Particle();
         copiedParticle.setDimension(particle.getDimension());
+        copiedParticle.setRating(particle.getRating());
+        copiedParticle.setBestRating(particle.getBestRating());
         copiedParticle.setBestSoloResult(particle.getBestSoloResult());
         copiedParticle.setBestGroupResult(particle.getBestGroupResult());
 

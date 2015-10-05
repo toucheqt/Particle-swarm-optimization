@@ -9,25 +9,25 @@ package com.toucheqt.pso.entity;
  */
 public class Dimension {
 
-    private Integer x;
-    private Integer y;
+    private Double x;
+    private Double y;
 
     private Double velocityX;
     private Double velocityY;
 
-    public Integer getX() {
+    public Double getX() {
         return x;
     }
 
-    public void setX(Integer x) {
+    public void setX(Double x) {
         this.x = x;
     }
 
-    public Integer getY() {
+    public Double getY() {
         return y;
     }
 
-    public void setY(Integer y) {
+    public void setY(Double y) {
         this.y = y;
     }
 

@@ -3,6 +3,7 @@ package com.toucheqt.pso.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.entity.Particle;
 import com.toucheqt.pso.settings.PSOConst;
 import com.toucheqt.pso.utils.CopyUtils;
@@ -23,18 +24,25 @@ public class ParticleSwarmOptimalization implements Runnable {
     private Double cognitiveCoef = PSOConst.COGNITIVE_COEF_PROPERTY;
     private Double socialCoef = PSOConst.SOCIAL_COEF_PROPERTY;
 
+    private Double swarmRating = Double.MAX_VALUE;
+
+    private Integer time = Integer.valueOf(0);
+
+    private Dimension goal;
+
     private List<Particle> particles = new ArrayList<Particle>();
 
     public ParticleSwarmOptimalization() {
         init();
     }
 
-    public ParticleSwarmOptimalization(Integer swarmSize, Double inertia, Double cognitiveCoef, Double socialCoef) {
+    public ParticleSwarmOptimalization(Integer swarmSize, Double inertia, Double cognitiveCoef, Double socialCoef, Dimension goal) {
         this();
         this.swarmSize = swarmSize;
         this.inertia = inertia;
         this.cognitiveCoef = cognitiveCoef;
         this.socialCoef = socialCoef;
+        this.goal = goal;
     }
 
 
@@ -42,24 +50,49 @@ public class ParticleSwarmOptimalization implements Runnable {
         for (int i = 0; i < swarmSize; i++) {
             particles.add(new Particle());
         }
+
+        goal = RandomUtils.getRandomDimension();
+        goal.setVelocityX(0.0);
+        goal.setVelocityY(0.0);
     }
 
 
     @Override
     public void run() {
+        Double last = -1.0;
+        while (true) {
+            // can execute this in parallel
+            particles.forEach((particle) -> {
+                particle.setDimension(RandomUtils.getRandomDimension());
+                particle.evaluate(goal);
+                particle.setBestSoloResult(CopyUtils.copyParticle(particle));
 
-    }
+                if (swarmRating > particle.getBestRating()) {
+                    swarmRating = particle.getBestRating();
+                }
+            });
 
+            for (Particle particle : particles) {
+                particle.iterate(inertia, cognitiveCoef, socialCoef);
+                particle.evaluate(goal);
 
-    /**
-     * Initializes particles
-     */
-    private void processStepOne() {
-        for (Particle particle : particles) {
-            particle.setDimension(RandomUtils.getRandomDimension());
-            particle.setBestSoloResult(CopyUtils.copyParticle(particle));
+                if (swarmRating > particle.getBestRating()) {
+                    swarmRating = particle.getBestRating();
+                }
+            }
+
+            if (last != swarmRating) {
+                System.out.println(swarmRating);
+                last = swarmRating;
+            }
+
+            try {
+                Thread.sleep(17);
+            } catch (Exception ex) {}
         }
     }
+
+
     public Integer getSwarmSize() {
         return swarmSize;
     }
