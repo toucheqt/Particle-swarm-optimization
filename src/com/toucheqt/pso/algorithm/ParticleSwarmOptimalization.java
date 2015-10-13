@@ -32,6 +32,8 @@ public class ParticleSwarmOptimalization implements Runnable {
 
     private List<Particle> particles = new ArrayList<Particle>();
 
+    private volatile boolean done = Boolean.FALSE;
+
     public ParticleSwarmOptimalization() {
         init();
     }
@@ -42,7 +44,9 @@ public class ParticleSwarmOptimalization implements Runnable {
         this.inertia = inertia;
         this.cognitiveCoef = cognitiveCoef;
         this.socialCoef = socialCoef;
-        this.goal = goal;
+        if (goal != null) {
+            this.goal = goal;
+        }
     }
 
 
@@ -58,9 +62,9 @@ public class ParticleSwarmOptimalization implements Runnable {
 
 
     @Override
-    public void run() {
+    public synchronized void run() {
         Double last = -1.0;
-        while (true) {
+        while (!done) {
             // can execute this in parallel
             particles.forEach((particle) -> {
                 particle.setDimension(RandomUtils.getRandomDimension());
@@ -90,6 +94,22 @@ public class ParticleSwarmOptimalization implements Runnable {
                 Thread.sleep(17);
             } catch (Exception ex) {}
         }
+    }
+
+    /**
+     * Tests whether is thread alive and running.
+     * 
+     * @return
+     */
+    public boolean isAlive() {
+        return !done;
+    }
+
+    /**
+     * Shuts down current thread.
+     */
+    public void shutdown() {
+        done = Boolean.TRUE;
     }
 
 

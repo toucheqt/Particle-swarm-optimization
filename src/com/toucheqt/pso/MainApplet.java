@@ -2,11 +2,13 @@ package com.toucheqt.pso;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.logging.Level;
 
 import javax.swing.JApplet;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
-import com.toucheqt.pso.algorithm.ParticleSwarmOptimalization;
+import com.sun.istack.internal.logging.Logger;
 import com.toucheqt.pso.settings.PSOConst;
 
 
@@ -21,14 +23,15 @@ public class MainApplet extends JApplet {
     @Override
     public void init() {
         setSize(PSOConst.APPLET_WIDTH, PSOConst.APPLET_HEIGHT);
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+            Logger.getLogger(MainApplet.class).log(Level.WARNING, "Default system UI look was not loaded.", ex);
+        }
+
         createMainLayout();
     }
-    @Override
-    public void start() {
-        Thread algorithm = new Thread(new ParticleSwarmOptimalization());
-        algorithm.start();
-    }
-
     private void createMainLayout() {
         setLayout(new BorderLayout(5, 5));
 

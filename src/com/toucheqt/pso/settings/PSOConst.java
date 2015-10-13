@@ -29,4 +29,13 @@ public class PSOConst {
     public static final double MIN_Y_VELOCITY = 0.5;
     public static final double MAX_Y_VELOCITY = 5.0;
 
+    // maps
+    public static final String LEVEL_ONE_KEY = "Simple deck";
+    public static final String LEVEL_TWO_KEY = "Collision detection";
+    public static final String LEVEL_THREE_KEY = "Maze Runner";
+
+    public static final String[] getLevelValues() {
+        return new String[] { LEVEL_ONE_KEY, LEVEL_TWO_KEY, LEVEL_THREE_KEY };
+    }
+
 }
