@@ -1,16 +1,20 @@
-package com.toucheqt.pso;
+package com.toucheqt.pso.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.toucheqt.pso.algorithm.ParticleSwarmOptimalization;
+import com.toucheqt.pso.algorithm.ParticleSwarmOptimalizationTask;
+import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.settings.PSOConst;
 
 /**
@@ -20,21 +24,31 @@ import com.toucheqt.pso.settings.PSOConst;
  *
  */
 @SuppressWarnings("serial")
-public class MainPanel extends JPanel {
+public class SettingsPanel extends JPanel {
 
-    private ParticleSwarmOptimalization algorithm;
+    public static final String RATING_COMPONENT = "rating";
+
+    private ParticleSwarmOptimalizationTask task;
 
     private JTextField swarmSizeField = new JTextField(String.valueOf(PSOConst.SWARM_SIZE_PROPERTY));
     private JTextField inertiaField = new JTextField(String.valueOf(PSOConst.INERTIA_PROPERTY));
     private JTextField cognitiveCoefField = new JTextField(String.valueOf(PSOConst.COGNITIVE_COEF_PROPERTY));
     private JTextField socialCoefField = new JTextField(String.valueOf(PSOConst.SOCIAL_COEF_PROPERTY));
 
+    private Integer swarmSizeValue = null;
+    private Double inertiaValue = null;
+    private Double cognitiveCoefValue = null;
+    private Double socialCoefValue = null;
+
     private JComboBox<String> levelComboBox = new JComboBox<String>(PSOConst.getLevelValues());
 
     private JLabel timerLabel = new JLabel("0.00s");
     private JLabel ratingLabel = new JLabel("-");
 
-    public MainPanel() {
+    private JButton startButton = new JButton("Start");
+    private JButton stopButton = new JButton("Stop");
+
+    public SettingsPanel() {
         createMainLayout();
     }
 
@@ -76,11 +90,9 @@ public class MainPanel extends JPanel {
         rightLayout.add(new JLabel("Current best rating: "));
         rightLayout.add(ratingLabel);
 
-        JButton startButton = new JButton("Start");
         startButton.addActionListener(createStartButtonListener());
-
-        JButton stopButton = new JButton("Stop");
         stopButton.addActionListener(createStopButtonListener());
+        enableComponents(true);
 
         rightLayout.add(startButton);
         rightLayout.add(stopButton);
@@ -89,52 +101,75 @@ public class MainPanel extends JPanel {
     }
     private ActionListener createStartButtonListener() {
         return (event) -> {
-            Integer swarmSize = null;
-            Double inertia = null;
-            Double cognitiveCoef = null;
-            Double socialCoef = null;
+            enableComponents(false);
 
             // validate input
             try {
-                swarmSize = Integer.valueOf(swarmSizeField.getText());
-                inertia = Double.valueOf(inertiaField.getText());
-                cognitiveCoef = Double.valueOf(cognitiveCoefField.getText());
-                socialCoef = Double.valueOf(socialCoefField.getText());
+                swarmSizeValue = Integer.valueOf(swarmSizeField.getText());
+                inertiaValue = Double.valueOf(inertiaField.getText());
+                cognitiveCoefValue = Double.valueOf(cognitiveCoefField.getText());
+                socialCoefValue = Double.valueOf(socialCoefField.getText());
             } catch (NullPointerException | NumberFormatException e) {
-                if (swarmSize == null) {
-                    swarmSize = PSOConst.SWARM_SIZE_PROPERTY;
+                if (swarmSizeValue == null) {
+                    swarmSizeValue = PSOConst.SWARM_SIZE_PROPERTY;
                     swarmSizeField.setText(String.valueOf(PSOConst.SWARM_SIZE_PROPERTY));
                 }
 
-                if (inertia == null) {
-                    inertia = PSOConst.INERTIA_PROPERTY;
+                if (inertiaValue == null) {
+                    inertiaValue = PSOConst.INERTIA_PROPERTY;
                     inertiaField.setText(String.valueOf(PSOConst.INERTIA_PROPERTY));
                 }
 
-                if (cognitiveCoef == null) {
-                    cognitiveCoef = PSOConst.COGNITIVE_COEF_PROPERTY;
+                if (cognitiveCoefValue == null) {
+                    cognitiveCoefValue = PSOConst.COGNITIVE_COEF_PROPERTY;
                     cognitiveCoefField.setText(String.valueOf(PSOConst.COGNITIVE_COEF_PROPERTY));
                 }
 
-                if (socialCoef == null) {
-                    socialCoef = PSOConst.SOCIAL_COEF_PROPERTY;
+                if (socialCoefValue == null) {
+                    socialCoefValue = PSOConst.SOCIAL_COEF_PROPERTY;
                     socialCoefField.setText(String.valueOf(PSOConst.SOCIAL_COEF_PROPERTY));
                 }
             }
 
-            // TODO fix goal
-            algorithm = new ParticleSwarmOptimalization(swarmSize, inertia, cognitiveCoef, socialCoef, null);
-            Thread thread = new Thread(algorithm);
-            thread.start();
+            // TODO goal
+            Dimension goal = new Dimension();
+            goal.setX(0.0);
+            goal.setY(0.0);
+
+            task = new ParticleSwarmOptimalizationTask(goal, swarmSizeValue, inertiaValue, cognitiveCoefValue, socialCoefValue,
+                    createEditableComponentsMap());
+            task.execute();
         };
     }
-
 
     private ActionListener createStopButtonListener() {
         return (event) -> {
-            if (algorithm != null && algorithm.isAlive()) {
-                algorithm.shutdown();
-            }
+            enableComponents(true);
+            task.cancel(true);
+            task = null;
         };
     }
+
+    /**
+     * Enables/disables GUI components. When stop button is enabled, all other components are disabled and vice versa.
+     * 
+     * @param enabled
+     */
+    private void enableComponents(boolean enabled) {
+        startButton.setEnabled(enabled);
+        swarmSizeField.setEnabled(enabled);
+        inertiaField.setEnabled(enabled);
+        cognitiveCoefField.setEnabled(enabled);
+        socialCoefField.setEnabled(enabled);
+        levelComboBox.setEnabled(enabled);
+        stopButton.setEnabled(!enabled);
+    }
+
+    private Map<String, JComponent> createEditableComponentsMap() {
+        Map<String, JComponent> components = new HashMap<String, JComponent>();
+        components.put(RATING_COMPONENT, ratingLabel);
+
+        return components;
+    }
+
 }

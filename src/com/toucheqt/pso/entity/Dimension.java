@@ -9,45 +9,45 @@ package com.toucheqt.pso.entity;
  */
 public class Dimension {
 
-    private Double x;
-    private Double y;
+    private double x;
+    private double y;
 
-    private Double velocityX;
-    private Double velocityY;
+    private double velocityX;
+    private double velocityY;
 
-    public Double getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(Double x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public Double getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(Double y) {
+    public void setY(double y) {
         this.y = y;
     }
 
 
-    public Double getVelocityX() {
+    public double getVelocityX() {
         return velocityX;
     }
 
 
-    public void setVelocityX(Double velocityX) {
+    public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;
     }
 
 
-    public Double getVelocityY() {
+    public double getVelocityY() {
         return velocityY;
     }
 
 
-    public void setVelocityY(Double velocityY) {
+    public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
     }
 

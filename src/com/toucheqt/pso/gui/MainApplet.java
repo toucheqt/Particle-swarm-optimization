@@ -1,11 +1,10 @@
-package com.toucheqt.pso;
+package com.toucheqt.pso.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.logging.Level;
 
 import javax.swing.JApplet;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import com.sun.istack.internal.logging.Logger;
@@ -20,6 +19,11 @@ import com.toucheqt.pso.settings.PSOConst;
 @SuppressWarnings("serial")
 public class MainApplet extends JApplet {
 
+    private Thread thread;
+
+    private SettingsPanel settingsPanel;
+    private DeckPanel deckPanel;
+
     @Override
     public void init() {
         setSize(PSOConst.APPLET_WIDTH, PSOConst.APPLET_HEIGHT);
@@ -32,14 +36,16 @@ public class MainApplet extends JApplet {
 
         createMainLayout();
     }
+
     private void createMainLayout() {
+        settingsPanel = new SettingsPanel();
         setLayout(new BorderLayout(5, 5));
 
-        JPanel centerPanel = new JPanel();
-        centerPanel.setBackground(Color.DARK_GRAY);
+        deckPanel = new DeckPanel();
+        deckPanel.setBackground(Color.WHITE);
 
-        add(centerPanel, BorderLayout.CENTER);
-        add(new MainPanel(), BorderLayout.LINE_END);
+        add(deckPanel, BorderLayout.CENTER);
+        add(settingsPanel, BorderLayout.LINE_END);
     }
 
 }

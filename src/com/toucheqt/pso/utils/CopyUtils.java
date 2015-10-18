@@ -1,5 +1,6 @@
 package com.toucheqt.pso.utils;
 
+import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.entity.Particle;
 
 /**
@@ -23,11 +24,13 @@ public class CopyUtils {
         }
 
         Particle copiedParticle = new Particle();
-        copiedParticle.setDimension(particle.getDimension());
+        Dimension dimension = new Dimension();
+        dimension.setX(particle.getX());
+        dimension.setY(particle.getY());
+        dimension.setVelocityX(particle.getDimension().getVelocityX());
+        dimension.setVelocityY(particle.getDimension().getVelocityY());
+        copiedParticle.setDimension(dimension);
         copiedParticle.setRating(particle.getRating());
-        copiedParticle.setBestRating(particle.getBestRating());
-        copiedParticle.setBestSoloResult(particle.getBestSoloResult());
-        copiedParticle.setBestGroupResult(particle.getBestGroupResult());
 
         return copiedParticle;
     }

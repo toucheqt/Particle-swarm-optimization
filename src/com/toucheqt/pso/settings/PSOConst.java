@@ -13,9 +13,9 @@ public class PSOConst {
     public static final int APPLET_WIDTH = 800;
     public static final int APPLET_HEIGHT = 600;
 
-    public static final int MIN_X_COORD = 100;
-    public static final int MAX_X_COORD = 700;
-    public static final int MIN_Y_COORD = 100;
+    public static final int MIN_X_COORD = 10;
+    public static final int MAX_X_COORD = 500;
+    public static final int MIN_Y_COORD = 10;
     public static final int MAX_Y_COORD = 500;
 
     // algorithm settings
@@ -24,9 +24,10 @@ public class PSOConst {
     public static final double COGNITIVE_COEF_PROPERTY = 2.05;
     public static final double SOCIAL_COEF_PROPERTY = 2.05;
 
-    public static final double MIN_X_VELOCITY = 0.5;
+    // FIXME refactor min&max to one property
+    public static final double MIN_X_VELOCITY = 0.0;
     public static final double MAX_X_VELOCITY = 5.0;
-    public static final double MIN_Y_VELOCITY = 0.5;
+    public static final double MIN_Y_VELOCITY = 0.0;
     public static final double MAX_Y_VELOCITY = 5.0;
 
     // maps

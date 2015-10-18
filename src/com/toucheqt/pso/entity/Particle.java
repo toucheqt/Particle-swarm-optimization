@@ -1,5 +1,6 @@
 package com.toucheqt.pso.entity;
 
+import com.toucheqt.pso.settings.PSOConst;
 import com.toucheqt.pso.utils.RandomUtils;
 
 /**
@@ -14,16 +15,12 @@ public class Particle {
     private Dimension dimension;
     private Integer stationaryTime = Integer.valueOf(0);
 
-    private Double rating;
-    private Double bestRating = Double.MAX_VALUE;
+    private double rating = Double.MAX_VALUE;
 
     private Particle bestSoloResult;
-    private Particle bestGroupResult;
 
-    public Particle() {}
-
-    public Particle(Dimension dimension) {
-        this.dimension = dimension;
+    public Particle() {
+        dimension = RandomUtils.getRandomDimension();
     }
 
     /**
@@ -33,16 +30,11 @@ public class Particle {
      * 
      * @param goal
      */
-    public void evaluate(Dimension goal) {
+    public double evaluate(Dimension goal) {
         double firstPart = Math.pow(goal.getX() - dimension.getX(), 2);
         double secondPart = Math.pow(goal.getY() - dimension.getY(), 2);
         double thirdPart = Math.pow(stationaryTime, 2);
-
-        rating = Math.sqrt(firstPart + secondPart + thirdPart);
-
-        if (bestRating > rating) {
-            bestRating = rating;
-        }
+        return Math.sqrt(firstPart + secondPart + thirdPart);
     }
 
 
@@ -53,35 +45,51 @@ public class Particle {
      * @param cognitiveCoef
      * @param socialCoef
      */
-    public void iterate(Double inertia, Double cognitiveCoef, Double socialCoef) {
-        Double tmpResult = 0.0;
-        Double velocityX = 0.0;
-        Double velocityY = 0.0;
+    public void iterate(Double inertia, Double cognitiveCoef, Double socialCoef, Particle bestResult) {
+        double velocityX = PSOConst.MIN_X_VELOCITY;
+        double velocityY = PSOConst.MIN_Y_VELOCITY;
+
+        double rp = RandomUtils.getUniformRandom();
+        double rg = RandomUtils.getUniformRandom();
 
         velocityX = inertia * dimension.getVelocityX();
-
-        tmpResult = cognitiveCoef * RandomUtils.getUniformRandom()
-                * (bestSoloResult.getDimension().getVelocityX() - dimension.getVelocityX());
-        velocityX += tmpResult;
-
-        tmpResult = socialCoef * RandomUtils.getUniformRandom() * (bestSoloResult.getDimension().getVelocityY() - dimension.getVelocityY());
-        velocityX += tmpResult;
+        velocityX += cognitiveCoef * rp * (bestSoloResult.getDimension().getX() - dimension.getX());
+        velocityX += socialCoef * rg * (bestResult.getDimension().getX() - dimension.getX());
 
 
         velocityY = inertia * dimension.getVelocityY();
+        velocityY += cognitiveCoef * rp * (bestSoloResult.getDimension().getY() - dimension.getY());
+        velocityY += socialCoef * rg * (bestResult.getDimension().getY() - dimension.getY());
 
-        tmpResult = cognitiveCoef * RandomUtils.getUniformRandom()
-                * (bestSoloResult.getDimension().getVelocityY() - dimension.getVelocityY());
-        velocityY += tmpResult;
+        if (velocityX > PSOConst.MAX_X_VELOCITY) {
+            velocityX = PSOConst.MAX_X_VELOCITY;
+        }
 
-        tmpResult = socialCoef * RandomUtils.getUniformRandom() * (bestSoloResult.getDimension().getVelocityY() - dimension.getVelocityY());
-        velocityY += tmpResult;
+        if (velocityY > PSOConst.MAX_Y_VELOCITY) {
+            velocityY = PSOConst.MAX_Y_VELOCITY;
+        }
 
+        if (velocityX + getX() < PSOConst.MIN_X_COORD || velocityX + getX() > PSOConst.MAX_X_COORD) {
+            velocityX = PSOConst.MIN_X_VELOCITY;
+        }
+
+        if (velocityY + getY() < PSOConst.MIN_Y_COORD || velocityY + getY() > PSOConst.MAX_Y_COORD) {
+            velocityY = PSOConst.MIN_Y_VELOCITY;
+        }
 
         dimension.setVelocityX(velocityX);
         dimension.setX(dimension.getX() + velocityX);
         dimension.setVelocityY(velocityY);
         dimension.setY(dimension.getY() + velocityY);
+    }
+
+
+    public double getX() {
+        return dimension.getX();
+    }
+
+    public double getY() {
+        return dimension.getY();
     }
 
 
@@ -93,23 +101,14 @@ public class Particle {
         this.dimension = dimension;
     }
 
-    public Double getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
-
-    public Double getBestRating() {
-        return bestRating;
-    }
-
-
-    public void setBestRating(Double bestRating) {
-        this.bestRating = bestRating;
-    }
 
     public Particle getBestSoloResult() {
         return bestSoloResult;
@@ -117,14 +116,6 @@ public class Particle {
 
     public void setBestSoloResult(Particle bestSoloResult) {
         this.bestSoloResult = bestSoloResult;
-    }
-
-    public Particle getBestGroupResult() {
-        return bestGroupResult;
-    }
-
-    public void setBestGroupResult(Particle bestGroupResult) {
-        this.bestGroupResult = bestGroupResult;
     }
 
 }
