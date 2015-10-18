@@ -14,9 +14,9 @@ public class PSOConst {
     public static final int APPLET_HEIGHT = 600;
 
     public static final int MIN_X_COORD = 10;
-    public static final int MAX_X_COORD = 500;
+    public static final int MAX_X_COORD = 520;
     public static final int MIN_Y_COORD = 10;
-    public static final int MAX_Y_COORD = 500;
+    public static final int MAX_Y_COORD = 570;
 
     // algorithm settings
     public static final int SWARM_SIZE_PROPERTY = 50;
@@ -26,9 +26,9 @@ public class PSOConst {
 
     // FIXME refactor min&max to one property
     public static final double MIN_X_VELOCITY = 0.0;
-    public static final double MAX_X_VELOCITY = 5.0;
+    public static final double MAX_X_VELOCITY = 2.0;
     public static final double MIN_Y_VELOCITY = 0.0;
-    public static final double MAX_Y_VELOCITY = 5.0;
+    public static final double MAX_Y_VELOCITY = 2.0;
 
     // maps
     public static final String LEVEL_ONE_KEY = "Simple deck";

@@ -10,6 +10,7 @@ import javax.swing.SwingWorker;
 
 import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.entity.Particle;
+import com.toucheqt.pso.gui.Board;
 import com.toucheqt.pso.gui.SettingsPanel;
 import com.toucheqt.pso.utils.CopyUtils;
 
@@ -85,6 +86,13 @@ public class ParticleSwarmOptimalizationTask extends SwingWorker<Void, Void> {
     protected void process(List<Void> voidList) {
         if (components.get(SettingsPanel.RATING_COMPONENT) != null) {
             ((JLabel)components.get(SettingsPanel.RATING_COMPONENT)).setText(String.valueOf(bestResult.getRating()));
+        }
+
+        if (components.get(SettingsPanel.BOARD_COMPONENT) != null) {
+            Board board = ((Board)components.get(SettingsPanel.BOARD_COMPONENT));
+            board.setGoal(goal);
+            board.setParticles(particles);
+            board.repaint();
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.toucheqt.pso.utils;
 
+import java.util.Random;
+
 import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.settings.PSOConst;
 
@@ -14,6 +16,8 @@ public class RandomUtils {
 
     private static final double UNIFORM_MIN_VALUE = 0.0;
     private static final double UNIFORM_MAX_VALUE = 1.0;
+
+    private static Random random = new Random();
 
     /**
      * Creates dimension for particle with random position and velocity;
@@ -36,6 +40,10 @@ public class RandomUtils {
      */
     public static Double getUniformRandom() {
         return UNIFORM_MIN_VALUE + Math.random() * ((UNIFORM_MAX_VALUE - UNIFORM_MIN_VALUE) + 1);
+    }
+
+    public static boolean getRandomBoolean() {
+        return random.nextBoolean();
     }
 
 }

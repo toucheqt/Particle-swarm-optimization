@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import com.toucheqt.pso.algorithm.ParticleSwarmOptimalizationTask;
 import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.settings.PSOConst;
+import com.toucheqt.pso.utils.RandomUtils;
 
 /**
  * Main panel in this application
@@ -27,6 +28,7 @@ import com.toucheqt.pso.settings.PSOConst;
 public class SettingsPanel extends JPanel {
 
     public static final String RATING_COMPONENT = "rating";
+    public static final String BOARD_COMPONENT = "board";
 
     private ParticleSwarmOptimalizationTask task;
 
@@ -47,6 +49,9 @@ public class SettingsPanel extends JPanel {
 
     private JButton startButton = new JButton("Start");
     private JButton stopButton = new JButton("Stop");
+
+    // board layout component
+    private JPanel board;
 
     public SettingsPanel() {
         createMainLayout();
@@ -131,10 +136,10 @@ public class SettingsPanel extends JPanel {
                 }
             }
 
-            // TODO goal
-            Dimension goal = new Dimension();
-            goal.setX(0.0);
-            goal.setY(0.0);
+            Dimension goal = null;
+            if (PSOConst.LEVEL_ONE_KEY.equals(levelComboBox.getSelectedItem().toString())) {
+                goal = RandomUtils.getRandomDimension();
+            }
 
             task = new ParticleSwarmOptimalizationTask(goal, swarmSizeValue, inertiaValue, cognitiveCoefValue, socialCoefValue,
                     createEditableComponentsMap());
@@ -168,8 +173,13 @@ public class SettingsPanel extends JPanel {
     private Map<String, JComponent> createEditableComponentsMap() {
         Map<String, JComponent> components = new HashMap<String, JComponent>();
         components.put(RATING_COMPONENT, ratingLabel);
+        components.put(BOARD_COMPONENT, board);
 
         return components;
+    }
+
+    public void setBoard(JPanel board) {
+        this.board = board;
     }
 
 }
