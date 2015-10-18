@@ -74,7 +74,7 @@ public class ParticleSwarmOptimalizationTask extends SwingWorker<Void, Void> {
             });
 
             // delay algorithm a bit to demonstrate its functionality
-            Thread.sleep(100);
+            Thread.sleep(75);
 
             publish();
         }

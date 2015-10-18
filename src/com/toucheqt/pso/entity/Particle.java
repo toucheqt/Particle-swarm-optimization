@@ -56,17 +56,20 @@ public class Particle {
         velocityX += cognitiveCoef * rp * (bestSoloResult.getDimension().getX() - dimension.getX());
         velocityX += socialCoef * rg * (bestResult.getDimension().getX() - dimension.getX());
 
-
         velocityY = inertia * dimension.getVelocityY();
         velocityY += cognitiveCoef * rp * (bestSoloResult.getDimension().getY() - dimension.getY());
         velocityY += socialCoef * rg * (bestResult.getDimension().getY() - dimension.getY());
 
         if (velocityX > PSOConst.MAX_X_VELOCITY) {
-            velocityX = PSOConst.MAX_X_VELOCITY;
+            velocityX = RandomUtils.getRandomVelocity();
+        } else if (velocityX < -PSOConst.MAX_X_VELOCITY) {
+            velocityX = -RandomUtils.getRandomVelocity();
         }
 
         if (velocityY > PSOConst.MAX_Y_VELOCITY) {
-            velocityY = PSOConst.MAX_Y_VELOCITY;
+            velocityY = RandomUtils.getRandomVelocity();
+        } else if (velocityY < -PSOConst.MAX_Y_VELOCITY) {
+            velocityY = -RandomUtils.getRandomVelocity();
         }
 
         if (velocityX + getX() < PSOConst.MIN_X_COORD || velocityX + getX() > PSOConst.MAX_X_COORD) {

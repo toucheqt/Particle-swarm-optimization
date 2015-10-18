@@ -46,4 +46,8 @@ public class RandomUtils {
         return random.nextBoolean();
     }
 
+    public static double getRandomVelocity() {
+        return PSOConst.MIN_X_VELOCITY + (Math.random() * ((PSOConst.MAX_X_VELOCITY - PSOConst.MIN_X_VELOCITY)));
+    }
+
 }
