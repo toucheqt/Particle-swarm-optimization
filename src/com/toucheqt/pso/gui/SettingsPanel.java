@@ -7,14 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.toucheqt.pso.algorithm.ParticleSwarmOptimalizationTask;
-import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.settings.PSOConst;
 import com.toucheqt.pso.utils.RandomUtils;
 
@@ -42,16 +40,13 @@ public class SettingsPanel extends JPanel {
     private Double cognitiveCoefValue = null;
     private Double socialCoefValue = null;
 
-    private JComboBox<String> levelComboBox = new JComboBox<String>(PSOConst.getLevelValues());
-
-    private JLabel timerLabel = new JLabel("0.00s");
     private JLabel ratingLabel = new JLabel("-");
 
     private JButton startButton = new JButton("Start");
     private JButton stopButton = new JButton("Stop");
 
     // board layout component
-    private JPanel board;
+    private Board board;
 
     public SettingsPanel() {
         createMainLayout();
@@ -85,13 +80,7 @@ public class SettingsPanel extends JPanel {
         rightLayout.add(new JLabel("Social coeficient: "));
         rightLayout.add(socialCoefField);
 
-        rightLayout.add(new JLabel("Level: "));
-        rightLayout.add(levelComboBox);
-
         // algorithm info
-        rightLayout.add(new JLabel("Time since start: "));
-        rightLayout.add(timerLabel);
-
         rightLayout.add(new JLabel("Current best rating: "));
         rightLayout.add(ratingLabel);
 
@@ -136,13 +125,8 @@ public class SettingsPanel extends JPanel {
                 }
             }
 
-            Dimension goal = null;
-            if (PSOConst.LEVEL_ONE_KEY.equals(levelComboBox.getSelectedItem().toString())) {
-                goal = RandomUtils.getRandomDimension();
-            }
-
-            task = new ParticleSwarmOptimalizationTask(goal, swarmSizeValue, inertiaValue, cognitiveCoefValue, socialCoefValue,
-                    createEditableComponentsMap());
+            task = new ParticleSwarmOptimalizationTask(RandomUtils.getRandomDimension(), swarmSizeValue, inertiaValue, cognitiveCoefValue,
+                    socialCoefValue, createEditableComponentsMap());
             task.execute();
         };
     }
@@ -166,7 +150,6 @@ public class SettingsPanel extends JPanel {
         inertiaField.setEnabled(enabled);
         cognitiveCoefField.setEnabled(enabled);
         socialCoefField.setEnabled(enabled);
-        levelComboBox.setEnabled(enabled);
         stopButton.setEnabled(!enabled);
     }
 
@@ -178,7 +161,7 @@ public class SettingsPanel extends JPanel {
         return components;
     }
 
-    public void setBoard(JPanel board) {
+    public void setBoard(Board board) {
         this.board = board;
     }
 

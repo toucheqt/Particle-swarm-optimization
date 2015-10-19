@@ -12,11 +12,9 @@ import com.toucheqt.pso.utils.RandomUtils;
  */
 public class Particle {
 
-    private Dimension dimension;
-    private Integer stationaryTime = Integer.valueOf(0);
-
     private double rating = Double.MAX_VALUE;
 
+    private Dimension dimension;
     private Particle bestSoloResult;
 
     public Particle() {
@@ -33,8 +31,7 @@ public class Particle {
     public double evaluate(Dimension goal) {
         double firstPart = Math.pow(goal.getX() - dimension.getX(), 2);
         double secondPart = Math.pow(goal.getY() - dimension.getY(), 2);
-        double thirdPart = Math.pow(stationaryTime, 2);
-        return Math.sqrt(firstPart + secondPart + thirdPart);
+        return Math.sqrt(firstPart + secondPart);
     }
 
 
@@ -46,8 +43,8 @@ public class Particle {
      * @param socialCoef
      */
     public void iterate(Double inertia, Double cognitiveCoef, Double socialCoef, Particle bestResult) {
-        double velocityX = PSOConst.MIN_X_VELOCITY;
-        double velocityY = PSOConst.MIN_Y_VELOCITY;
+        double velocityX = PSOConst.MIN_VELOCITY;
+        double velocityY = PSOConst.MIN_VELOCITY;
 
         double rp = RandomUtils.getUniformRandom();
         double rg = RandomUtils.getUniformRandom();
@@ -60,32 +57,28 @@ public class Particle {
         velocityY += cognitiveCoef * rp * (bestSoloResult.getDimension().getY() - dimension.getY());
         velocityY += socialCoef * rg * (bestResult.getDimension().getY() - dimension.getY());
 
-        if (velocityX > PSOConst.MAX_X_VELOCITY) {
-            velocityX = RandomUtils.getRandomVelocity();
-        } else if (velocityX < -PSOConst.MAX_X_VELOCITY) {
-            velocityX = -RandomUtils.getRandomVelocity();
-        }
-
-        if (velocityY > PSOConst.MAX_Y_VELOCITY) {
-            velocityY = RandomUtils.getRandomVelocity();
-        } else if (velocityY < -PSOConst.MAX_Y_VELOCITY) {
-            velocityY = -RandomUtils.getRandomVelocity();
+        if (velocityX > PSOConst.MAX_VELOCITY || velocityX < -PSOConst.MAX_VELOCITY || velocityY > PSOConst.MAX_VELOCITY
+                || velocityY < -PSOConst.MAX_VELOCITY) {
+            double tmp = (Math.abs(velocityX) > Math.abs(velocityY)) ? velocityX / 2.0 : velocityY / 2.0;
+            velocityY /= Math.abs(tmp);
+            velocityX /= Math.abs(tmp);
         }
 
         if (velocityX + getX() < PSOConst.MIN_X_COORD || velocityX + getX() > PSOConst.MAX_X_COORD) {
-            velocityX = PSOConst.MIN_X_VELOCITY;
+            velocityX = PSOConst.MIN_VELOCITY;
         }
 
         if (velocityY + getY() < PSOConst.MIN_Y_COORD || velocityY + getY() > PSOConst.MAX_Y_COORD) {
-            velocityY = PSOConst.MIN_Y_VELOCITY;
+            velocityY = PSOConst.MIN_VELOCITY;
         }
 
         dimension.setVelocityX(velocityX);
-        dimension.setX(dimension.getX() + velocityX);
         dimension.setVelocityY(velocityY);
-        dimension.setY(dimension.getY() + velocityY);
-    }
 
+        dimension.setX(dimension.getX() + dimension.getVelocityX());
+        dimension.setY(dimension.getY() + dimension.getVelocityY());
+
+    }
 
     public double getX() {
         return dimension.getX();

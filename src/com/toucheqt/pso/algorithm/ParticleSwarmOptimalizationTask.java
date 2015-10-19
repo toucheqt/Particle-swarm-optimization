@@ -61,6 +61,7 @@ public class ParticleSwarmOptimalizationTask extends SwingWorker<Void, Void> {
         while (!isCancelled()) {
             // can execute this in parallel
             particles.forEach((particle) -> {
+
                 particle.setRating(particle.evaluate(goal));
                 if (particle.getRating() < particle.getBestSoloResult().getRating()) {
                     particle.setBestSoloResult(CopyUtils.copyParticle(particle));
@@ -71,21 +72,25 @@ public class ParticleSwarmOptimalizationTask extends SwingWorker<Void, Void> {
                 }
 
                 particle.iterate(inertia, cognitiveCoef, socialCoef, bestResult);
+
             });
 
             // delay algorithm a bit to demonstrate its functionality
-            Thread.sleep(75);
+            Thread.sleep(50);
 
             publish();
         }
 
         return null;
     }
-
     @Override
     protected void process(List<Void> voidList) {
         if (components.get(SettingsPanel.RATING_COMPONENT) != null) {
-            ((JLabel)components.get(SettingsPanel.RATING_COMPONENT)).setText(String.valueOf(bestResult.getRating()));
+            double roundedNumber = bestResult.getRating() * 1000000000;
+            roundedNumber = Math.round(roundedNumber);
+            roundedNumber /= 1000000000;
+
+            ((JLabel)components.get(SettingsPanel.RATING_COMPONENT)).setText(String.valueOf(roundedNumber));
         }
 
         if (components.get(SettingsPanel.BOARD_COMPONENT) != null) {

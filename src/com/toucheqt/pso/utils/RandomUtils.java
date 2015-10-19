@@ -28,8 +28,8 @@ public class RandomUtils {
         Dimension dimension = new Dimension();
         dimension.setX(PSOConst.MIN_X_COORD + (Math.random() * ((PSOConst.MAX_X_COORD - PSOConst.MIN_X_COORD) + 1)));
         dimension.setY(PSOConst.MIN_Y_COORD + (Math.random() * ((PSOConst.MAX_Y_COORD - PSOConst.MIN_Y_COORD) + 1)));
-        dimension.setVelocityX(PSOConst.MIN_X_VELOCITY + (Math.random() * ((PSOConst.MAX_X_VELOCITY - PSOConst.MIN_X_VELOCITY) + 1)));
-        dimension.setVelocityY(PSOConst.MIN_Y_VELOCITY + (Math.random() * ((PSOConst.MAX_Y_VELOCITY - PSOConst.MIN_Y_VELOCITY) + 1)));
+        dimension.setVelocityX(PSOConst.MIN_VELOCITY + (Math.random() * ((PSOConst.MAX_VELOCITY - PSOConst.MIN_VELOCITY) + 1)));
+        dimension.setVelocityY(PSOConst.MIN_VELOCITY + (Math.random() * ((PSOConst.MAX_VELOCITY - PSOConst.MIN_VELOCITY) + 1)));
 
         return dimension;
     }
@@ -47,7 +47,7 @@ public class RandomUtils {
     }
 
     public static double getRandomVelocity() {
-        return PSOConst.MIN_X_VELOCITY + (Math.random() * ((PSOConst.MAX_X_VELOCITY - PSOConst.MIN_X_VELOCITY)));
+        return PSOConst.MIN_VELOCITY + (Math.random() * ((PSOConst.MAX_VELOCITY - PSOConst.MIN_VELOCITY)));
     }
 
 }

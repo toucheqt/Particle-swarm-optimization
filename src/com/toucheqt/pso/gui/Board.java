@@ -11,13 +11,14 @@ import javax.swing.JPanel;
 
 import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.entity.Particle;
+import com.toucheqt.pso.settings.PSOConst;
 import com.toucheqt.pso.utils.RandomUtils;
 
 
 public class Board extends JPanel {
 
     private static final int GOAL_SIZE = 10;
-    private static final int CIRCLE_SHIFT = 7;
+    private static final int CIRCLE_SHIFT = 3;
 
     private Graphics2D graphics;
 
@@ -38,7 +39,7 @@ public class Board extends JPanel {
 
         if (goal != null) {
             graphics.setStroke(defaultStroke);
-            graphics.fillOval((int)goal.getX() + CIRCLE_SHIFT, (int)goal.getY() + CIRCLE_SHIFT, GOAL_SIZE, GOAL_SIZE);
+            graphics.fillOval((int)goal.getX() - CIRCLE_SHIFT, (int)goal.getY() - CIRCLE_SHIFT, GOAL_SIZE, GOAL_SIZE);
         }
 
         if (particles != null) {
@@ -49,7 +50,7 @@ public class Board extends JPanel {
                     graphics.setColor(Color.ORANGE);
                 }
 
-                graphics.fillOval((int)particle.getX() + CIRCLE_SHIFT / 2, (int)particle.getY() + CIRCLE_SHIFT / 2, 5, 5);
+                graphics.fillRect((int)particle.getX(), (int)particle.getY(), PSOConst.PARTICLE_SIZE, PSOConst.PARTICLE_SIZE);
             });
         }
     }
@@ -61,4 +62,5 @@ public class Board extends JPanel {
     public void setParticles(List<Particle> particles) {
         this.particles = particles;
     }
+
 }
