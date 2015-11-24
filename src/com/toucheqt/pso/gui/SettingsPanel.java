@@ -93,6 +93,9 @@ public class SettingsPanel extends JPanel {
 
         return rightLayout;
     }
+
+    // LISTENERS
+
     private ActionListener createStartButtonListener() {
         return (event) -> {
             enableComponents(false);

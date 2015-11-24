@@ -13,6 +13,7 @@ import com.toucheqt.pso.settings.PSOConst;
 
 
 /**
+ * Default class of this application. Extends JApplet thus enabling this application to run in browsers
  * 
  * @author Ondøej Krpec, xkrpecqt@gmail.com
  *

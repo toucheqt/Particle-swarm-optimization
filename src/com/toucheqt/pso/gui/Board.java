@@ -9,12 +9,19 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import com.toucheqt.pso.algorithm.ParticleSwarmOptimalizationTask;
 import com.toucheqt.pso.entity.Dimension;
 import com.toucheqt.pso.entity.Particle;
 import com.toucheqt.pso.settings.PSOConst;
-import com.toucheqt.pso.utils.RandomUtils;
 
-
+/**
+ * JPanel representing board for painting algorithm results.
+ * 
+ * @see {@link ParticleSwarmOptimalizationTask}
+ * @author Ondøej Krpec, xkrpecqt@gmail.com
+ *
+ */
+@SuppressWarnings("serial")
 public class Board extends JPanel {
 
     private static final int GOAL_SIZE = 10;
@@ -44,12 +51,7 @@ public class Board extends JPanel {
 
         if (particles != null) {
             particles.forEach((particle) -> {
-                if (RandomUtils.getRandomBoolean()) {
-                    graphics.setColor(Color.RED);
-                } else {
-                    graphics.setColor(Color.ORANGE);
-                }
-
+                graphics.setColor(particle.getColor());
                 graphics.fillRect((int)particle.getX(), (int)particle.getY(), PSOConst.PARTICLE_SIZE, PSOConst.PARTICLE_SIZE);
             });
         }

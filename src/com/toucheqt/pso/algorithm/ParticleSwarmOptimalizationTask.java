@@ -48,7 +48,7 @@ public class ParticleSwarmOptimalizationTask extends SwingWorker<Void, Void> {
     protected Void doInBackground() throws Exception {
 
         for (int i = 0; i < swarmSize; i++) {
-            Particle particle = new Particle();
+            Particle particle = new Particle(goal);
             particle.setRating(particle.evaluate(goal));
             particle.setBestSoloResult(CopyUtils.copyParticle(particle));
             particles.add(particle);
@@ -76,7 +76,7 @@ public class ParticleSwarmOptimalizationTask extends SwingWorker<Void, Void> {
             });
 
             // delay algorithm a bit to demonstrate its functionality
-            Thread.sleep(50);
+            Thread.sleep(60);
 
             publish();
         }

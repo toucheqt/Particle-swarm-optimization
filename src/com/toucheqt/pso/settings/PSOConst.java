@@ -21,8 +21,8 @@ public class PSOConst {
     public static final int PARTICLE_SIZE = 5;
 
     // algorithm settings
-    public static final int SWARM_SIZE_PROPERTY = 40;
-    public static final double INERTIA_PROPERTY = 20;
+    public static final int SWARM_SIZE_PROPERTY = 50;
+    public static final double INERTIA_PROPERTY = 30;
     public static final double COGNITIVE_COEF_PROPERTY = 2.05;
     public static final double SOCIAL_COEF_PROPERTY = 2.05;
 

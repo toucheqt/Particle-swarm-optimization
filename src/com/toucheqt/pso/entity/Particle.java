@@ -1,12 +1,14 @@
 package com.toucheqt.pso.entity;
 
+import java.awt.Color;
+
 import com.toucheqt.pso.settings.PSOConst;
 import com.toucheqt.pso.utils.RandomUtils;
 
 /**
  * Represents particle from particle swarm optimalization algorithm.
  * 
- * @see https://en.wikipedia.org/wiki/Particle_swarm_optimization
+ * @see {@link https://en.wikipedia.org/wiki/Particle_swarm_optimization}
  * @author Ondøej Krpec, xkrpecqt@gmail.com
  *
  */
@@ -17,8 +19,22 @@ public class Particle {
     private Dimension dimension;
     private Particle bestSoloResult;
 
+    private Color color;
+
     public Particle() {
-        dimension = RandomUtils.getRandomDimension();
+        if (RandomUtils.getRandomBoolean()) {
+            color = Color.MAGENTA;
+        } else {
+            color = Color.GREEN;
+        }
+    };
+
+    public Particle(Dimension goal) {
+        this();
+
+        do { // create particles atleast 75 pixels away from the goal
+            dimension = RandomUtils.getRandomDimension();
+        } while (Math.abs(goal.getX() - getX()) < 75 && Math.abs(goal.getY() - getY()) < 75);
     }
 
     /**
@@ -112,6 +128,15 @@ public class Particle {
 
     public void setBestSoloResult(Particle bestSoloResult) {
         this.bestSoloResult = bestSoloResult;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
 }
